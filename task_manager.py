@@ -28,7 +28,10 @@ def set_task(
         "points": 0,
         "streak": 0,
         "achievements": [],
-        "last_focus_date": None
+        "last_focus_date": None,
+        "night_sessions": 0,
+        "morning_sessions": 0,
+        "daily_sessions": 0
     }
     #print(task_data)
 

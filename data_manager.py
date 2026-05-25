@@ -27,7 +27,9 @@ def load_data(
             tasks.extend(
                 task_data.keys()
             )
+
             for task in task_data:
+
                 if (
                     "achievements"
                     not in task_data[task]
@@ -36,7 +38,32 @@ def load_data(
                         "achievements"
                     ] = []
 
+                if (
+                    "night_sessions"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "night_sessions"
+                    ] = 0
+
+                if (
+                    "morning_sessions"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "morning_sessions"
+                    ] = 0
+
+                if (
+                    "daily_sessions"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "daily_sessions"
+                    ] = 0
+
             for task in tasks:
+
                 if task_data[task][
                     "last_focus_date"
                 ]:
@@ -48,6 +75,19 @@ def load_data(
                             "last_focus_date"
                         ]
                     )
+
+                # Reset daily sessions
+                today = date.today()
+
+                if (
+                    task_data[task][
+                        "last_focus_date"
+                    ] != today
+                ):
+
+                    task_data[task][
+                        "daily_sessions"
+                    ] = 0
 
                 task_listbox.insert(
                     tk.END,

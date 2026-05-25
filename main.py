@@ -3,6 +3,7 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import simpledialog
 from datetime import date
+from datetime import datetime
 import json #to save/load data into file
 from data_manager import (
     save_data,
@@ -36,6 +37,9 @@ from achievement_system import (
 )
 from notification_system import (
     show_notification
+)
+from badge_popup import (
+    show_badge_popup
 )
 
 # creating main application window
@@ -418,14 +422,56 @@ def finish_session_ui():
         save_data,
         messagebox
     )
+
     if selected_task[0]:
+        task_data[
+            selected_task[0]
+        ][
+            "daily_sessions"
+        ] += 1
+        current_hour = (
+            datetime.now().hour
+        )
+
+        if current_hour >= 0:
+
+            task_data[
+                selected_task[0]
+            ][
+                "night_sessions"
+            ] += 1
+
+            show_notification(
+                app,
+                "🌙 Still Going Strong",
+                (
+                    "Late nights are tough.\n"
+                    "Proud of you for showing up tonight 🌱"
+                )
+            )
+        if current_hour < 7:
+            task_data[
+            selected_task[0]
+        ][
+            "morning_sessions"
+        ] += 1
+        show_notification(
+            app,
+            "☀️ Early Momentum",
+            (
+                "Starting early is powerful.\n"
+                "Proud of you for showing up ☀️"
+            )
+        )
+
         check_achievements(
             app,
             selected_duration,
             task_data[
                 selected_task[0]
             ],
-            show_notification
+            show_notification,
+            show_badge_popup
         )
 
 def countdown_ui(
