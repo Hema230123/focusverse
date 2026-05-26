@@ -31,7 +31,10 @@ def set_task(
         "last_focus_date": None,
         "night_sessions": 0,
         "morning_sessions": 0,
-        "daily_sessions": 0
+        "daily_sessions": 0,
+        "focus_sessions": 0,
+        "session_streak": 0,
+        "missed_day": False,
     }
     #print(task_data)
 

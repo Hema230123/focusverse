@@ -49,6 +49,21 @@ ACHIEVEMENTS = {
         "title": "⚡ Marathoner",
         "message":
         "Locked in for the day ⚡"
+    },
+    "tiny_steps": {
+        "title": "🌱 Tiny Steps",
+        "message":
+        "Every big journey starts small 🌱"
+    },
+    "locked_in": {
+        "title": "🧠 Locked In",
+        "message":
+        "You're fully in the zone 🧠"
+    },
+    "comeback": {
+        "title": "🔥 Comeback",
+        "message":
+        "Welcome back stronger 🔥"
     }
 }
 
@@ -178,7 +193,7 @@ def check_achievements(
 
     # 🌙 Night Owl achievement
     if (
-        task["night_sessions"] == 1
+        task["night_sessions"] == 10
         and "night_owl"
         not in task["achievements"]
     ):
@@ -233,24 +248,101 @@ def check_achievements(
             "marathoner"
         )
 
-    major_badges = [
-        "Night Owl",
-        "Early Bird",
-        "Marathoner"
-    ]
-    for title, message in unlocked:
-        if any(
-            badge in title
-            for badge in major_badges
+    # 🌱 Tiny Steps achievement
+    if (
+        task["focus_sessions"] == 5
+        and "tiny_steps"
+        not in task["achievements"]
+    ):
+        achievement = ACHIEVEMENTS[
+            "tiny_steps"
+        ]
+        unlocked.append(
+            (
+                achievement["title"],
+                achievement["message"]
+            )
+        )
+        task["achievements"].append(
+            "tiny_steps"
+        )
+
+        # 🌱 Tiny Steps achievement
+        if (
+            task["focus_sessions"] == 5
+            and "tiny_steps"
+            not in task["achievements"]
         ):
-            show_badge_popup(
-                app,
-                title,
-                message
+            achievement = ACHIEVEMENTS[
+                "tiny_steps"
+            ]
+            unlocked.append(
+                (
+                    achievement["title"],
+                    achievement["message"]
+                )
             )
-        else:
-            show_notification(
-                app,
-                "🏆 Achievement Unlocked!",
-                f"{title}\n{message}"
+            task["achievements"].append(
+                "tiny_steps"
             )
+
+        # 🧠 Locked In achievement
+        if (
+            task["session_streak"] == 3
+            and "locked_in"
+            not in task["achievements"]
+        ):
+            achievement = ACHIEVEMENTS[
+                "locked_in"
+            ]
+            unlocked.append(
+                (
+                    achievement["title"],
+                    achievement["message"]
+                )
+            )
+            task["achievements"].append(
+                "locked_in"
+            )
+
+        # 🔥 Comeback achievement
+        if (
+            task["missed_day"]
+            and "comeback"
+            not in task["achievements"]
+        ):
+            achievement = ACHIEVEMENTS[
+            "comeback"
+            ]
+            unlocked.append(
+                (
+                    achievement["title"],
+                    achievement["message"]
+                )
+            )
+            task["achievements"].append(
+                "comeback"
+            )
+            task["missed_day"] = False
+
+        major_badges = [
+            "Night Owl",
+            "Early Bird",
+            "Marathoner"
+        ]
+        for title, message in unlocked:
+            if any(
+                badge in title
+                for badge in major_badges
+            ):
+                show_badge_popup(
+                    app,
+                    title,
+                    message
+                )
+            else:
+                show_notification(
+                    app,
+                    "🏆 Achievement Unlocked!",
+                    f"{title}\n{message}"
+                )

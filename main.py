@@ -41,6 +41,9 @@ from notification_system import (
 from badge_popup import (
     show_badge_popup
 )
+from badge_collection import (
+    open_badges_page
+)
 
 # creating main application window
 app = customtkinter.CTk()
@@ -207,6 +210,21 @@ current_task_label = customtkinter.CTkLabel(
     font=("Arial", 12)
 )
 current_task_label.pack(pady=5)
+
+badges_button = customtkinter.CTkButton(
+    left_frame,
+    text="🏅 My Badges",
+    width=250,
+    height=40,
+    command=lambda:
+    open_badges_page(
+        app,
+        task_data
+    )
+)
+badges_button.pack(
+    pady=10
+)
 
 selected_task_heading = customtkinter.CTkLabel(
     center_frame,
@@ -429,11 +447,24 @@ def finish_session_ui():
         ][
             "daily_sessions"
         ] += 1
+
+        task_data[
+            selected_task[0]
+        ][
+            "focus_sessions"
+        ] += 1
+
+        task_data[
+            selected_task[0]
+        ][
+            "session_streak"
+        ] += 1
+
         current_hour = (
             datetime.now().hour
         )
 
-        if current_hour >= 0:
+        if current_hour >= 23:
 
             task_data[
                 selected_task[0]
@@ -449,7 +480,7 @@ def finish_session_ui():
                     "Proud of you for showing up tonight 🌱"
                 )
             )
-        if current_hour < 7:
+        if current_hour <= 7:
             task_data[
             selected_task[0]
         ][

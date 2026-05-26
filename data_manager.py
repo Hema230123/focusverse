@@ -62,6 +62,30 @@ def load_data(
                         "daily_sessions"
                     ] = 0
 
+                if (
+                    "focus_sessions"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "focus_sessions"
+                    ] = 0
+
+                if (
+                    "session_streak"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "session_streak"
+                    ] = 0
+
+                if (
+                    "missed_day"
+                    not in task_data[task]
+                ):
+                    task_data[task][
+                        "missed_day"
+                    ] = False
+
             for task in tasks:
 
                 if task_data[task][
@@ -76,7 +100,6 @@ def load_data(
                         ]
                     )
 
-                # Reset daily sessions
                 today = date.today()
 
                 if (
@@ -85,8 +108,25 @@ def load_data(
                     ] != today
                 ):
 
+                    days_missed = (
+                        today
+                        - task_data[task][
+                            "last_focus_date"
+                        ]
+                    ).days
+
+                    if days_missed > 1:
+
+                        task_data[task][
+                            "missed_day"
+                        ] = True
+
                     task_data[task][
                         "daily_sessions"
+                    ] = 0
+
+                    task_data[task][
+                        "session_streak"
                     ] = 0
 
                 task_listbox.insert(
