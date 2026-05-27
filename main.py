@@ -2,8 +2,7 @@ import customtkinter #bringing the cusomtkinter module to create the app
 from tkinter import messagebox
 import tkinter as tk
 from tkinter import simpledialog
-from datetime import date
-from datetime import datetime
+from datetime import date,datetime
 import json #to save/load data into file
 from data_manager import (
     save_data,
@@ -55,7 +54,18 @@ customtkinter.set_default_color_theme("blue")
 app.title("FocusVerse")
 
 # window size
-app.geometry("500x400")
+app.geometry("1400x850")
+app.minsize(
+    1200,
+    750
+)
+app.after(
+    100,
+    lambda:
+    app.state(
+        "zoomed"
+    )
+)
 
 left_frame = customtkinter.CTkFrame(
     app,
@@ -454,11 +464,55 @@ def finish_session_ui():
             "focus_sessions"
         ] += 1
 
+        today = date.today()
+        last_date = (
+            task_data[
+                selected_task[0]
+            ][
+                "last_focus_date"
+            ]
+        )
+
+        # first focus ever
+        if (
+            last_date is None
+        ):
+            task_data[
+                selected_task[0]
+            ][
+                "session_streak"
+            ] = 1
+        # focused on different day
+        elif (
+            last_date != today
+        ):
+            days_difference = (
+                today - last_date
+            ).days
+            # consecutive day
+            if (
+                days_difference == 1
+            ):
+                task_data[
+                    selected_task[0]
+                ][
+                    "session_streak"
+                ] += 1
+            # missed days
+            elif (
+                days_difference > 1
+            ):
+                task_data[
+                    selected_task[0]
+                ][
+                    "session_streak"
+                ] = 1
+        # save today
         task_data[
             selected_task[0]
         ][
-            "session_streak"
-        ] += 1
+            "last_focus_date"
+        ] = today
 
         current_hour = (
             datetime.now().hour

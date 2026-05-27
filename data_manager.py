@@ -101,33 +101,35 @@ def load_data(
                     )
 
                 today = date.today()
-
-                if (
+                last_date = (
                     task_data[task][
                         "last_focus_date"
-                    ] != today
-                ):
-
-                    days_missed = (
+                    ]
+                )
+                if last_date:
+                    days_difference = (
                         today
-                        - task_data[task][
-                            "last_focus_date"
-                        ]
+                        - last_date
                     ).days
 
-                    if days_missed > 1:
-
+                    # missed day
+                    if (
+                        days_difference > 1
+                    ):
+                        task_data[task][
+                            "session_streak"
+                        ] = 0
                         task_data[task][
                             "missed_day"
                         ] = True
 
-                    task_data[task][
-                        "daily_sessions"
-                    ] = 0
-
-                    task_data[task][
-                        "session_streak"
-                    ] = 0
+                    # new day
+                    if (
+                        days_difference >= 1
+                    ):
+                        task_data[task][
+                            "daily_sessions"
+                        ] = 0
 
                 task_listbox.insert(
                     tk.END,

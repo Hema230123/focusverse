@@ -30,42 +30,55 @@ ACHIEVEMENTS = {
         "Focused for 1 total hour!"
     },
 
-    "consistency": {
-        "title": "🔥 Consistency Starter",
-        "message":
-        "Maintained a 3-day streak!"
-    },
     "night_owl": {
         "title": "🌙 Night Owl",
         "message":
         "You stayed focused while the world slept 🌙"
     },
+
     "early_bird": {
         "title": "☀️ Early Bird",
         "message":
         "You showed up before the world woke up ☀️"
     },
+
     "marathoner": {
         "title": "⚡ Marathoner",
         "message":
         "Locked in for the day ⚡"
     },
+
     "tiny_steps": {
         "title": "🌱 Tiny Steps",
         "message":
         "Every big journey starts small 🌱"
     },
+
     "locked_in": {
         "title": "🧠 Locked In",
         "message":
         "You're fully in the zone 🧠"
     },
+
     "comeback": {
         "title": "🔥 Comeback",
         "message":
         "Welcome back stronger 🔥"
+    },
+
+    "consistency_starter": {
+        "title": "🔥 Consistency Starter",
+        "message":
+        "Maintained a 3-day streak!"
+    },
+
+    "unstoppable": {
+        "title": "🚀 Unstoppable",
+        "message":
+        "Maintained a 7-day streak!"
     }
 }
+
 
 def check_achievements(
     app,
@@ -86,12 +99,14 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "focus_starter"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "focus_starter"
         )
@@ -105,12 +120,14 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "deep_worker"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
+            )
         )
-)
+
         task["achievements"].append(
             "deep_worker"
         )
@@ -124,12 +141,14 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "forest_mind"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
-    )
-)
+            )
+        )
+
         task["achievements"].append(
             "forest_mind"
         )
@@ -143,12 +162,14 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "focus_beginner"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "focus_beginner"
         )
@@ -162,33 +183,60 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "deep_focus"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "deep_focus"
         )
 
-    # 🔥 Streak achievement
+    # 🔥 Consistency Starter
     if (
-        task["streak"] == 3
-        and "consistency"
+        task["session_streak"] == 3
+        and "consistency_starter"
         not in task["achievements"]
     ):
+
         achievement = ACHIEVEMENTS[
-            "consistency"
+            "consistency_starter"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
-            achievement["message"]
+                achievement["message"]
             )
         )
+
         task["achievements"].append(
-            "consistency"
+            "consistency_starter"
+        )
+
+    # 🚀 Unstoppable
+    if (
+        task["session_streak"] == 7
+        and "unstoppable"
+        not in task["achievements"]
+    ):
+
+        achievement = ACHIEVEMENTS[
+            "unstoppable"
+        ]
+
+        unlocked.append(
+            (
+                achievement["title"],
+                achievement["message"]
+            )
+        )
+
+        task["achievements"].append(
+            "unstoppable"
         )
 
     # 🌙 Night Owl achievement
@@ -200,16 +248,18 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "night_owl"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "night_owl"
         )
-    
+
     # ☀️ Early Bird achievement
     if (
         task["morning_sessions"] == 10
@@ -219,16 +269,18 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "early_bird"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
-            achievement["message"]
+                achievement["message"]
             )
         )
+
         task["achievements"].append(
             "early_bird"
         )
-    
+
     # ⚡ Marathoner achievement
     if (
         task["daily_sessions"] == 3
@@ -238,12 +290,14 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "marathoner"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "marathoner"
         )
@@ -257,92 +311,85 @@ def check_achievements(
         achievement = ACHIEVEMENTS[
             "tiny_steps"
         ]
+
         unlocked.append(
             (
                 achievement["title"],
                 achievement["message"]
             )
         )
+
         task["achievements"].append(
             "tiny_steps"
         )
 
-        # 🌱 Tiny Steps achievement
-        if (
-            task["focus_sessions"] == 5
-            and "tiny_steps"
-            not in task["achievements"]
-        ):
-            achievement = ACHIEVEMENTS[
-                "tiny_steps"
-            ]
-            unlocked.append(
-                (
-                    achievement["title"],
-                    achievement["message"]
-                )
-            )
-            task["achievements"].append(
-                "tiny_steps"
-            )
-
-        # 🧠 Locked In achievement
-        if (
-            task["session_streak"] == 3
-            and "locked_in"
-            not in task["achievements"]
-        ):
-            achievement = ACHIEVEMENTS[
-                "locked_in"
-            ]
-            unlocked.append(
-                (
-                    achievement["title"],
-                    achievement["message"]
-                )
-            )
-            task["achievements"].append(
-                "locked_in"
-            )
-
-        # 🔥 Comeback achievement
-        if (
-            task["missed_day"]
-            and "comeback"
-            not in task["achievements"]
-        ):
-            achievement = ACHIEVEMENTS[
-            "comeback"
-            ]
-            unlocked.append(
-                (
-                    achievement["title"],
-                    achievement["message"]
-                )
-            )
-            task["achievements"].append(
-                "comeback"
-            )
-            task["missed_day"] = False
-
-        major_badges = [
-            "Night Owl",
-            "Early Bird",
-            "Marathoner"
+    # 🧠 Locked In achievement
+    if (
+        task["session_streak"] == 3
+        and "locked_in"
+        not in task["achievements"]
+    ):
+        achievement = ACHIEVEMENTS[
+            "locked_in"
         ]
-        for title, message in unlocked:
-            if any(
-                badge in title
-                for badge in major_badges
-            ):
-                show_badge_popup(
-                    app,
-                    title,
-                    message
-                )
-            else:
-                show_notification(
-                    app,
-                    "🏆 Achievement Unlocked!",
-                    f"{title}\n{message}"
-                )
+
+        unlocked.append(
+            (
+                achievement["title"],
+                achievement["message"]
+            )
+        )
+
+        task["achievements"].append(
+            "locked_in"
+        )
+
+    # 🔥 Comeback achievement
+    if (
+        task["missed_day"]
+        and "comeback"
+        not in task["achievements"]
+    ):
+        achievement = ACHIEVEMENTS[
+            "comeback"
+        ]
+
+        unlocked.append(
+            (
+                achievement["title"],
+                achievement["message"]
+            )
+        )
+
+        task["achievements"].append(
+            "comeback"
+        )
+
+        task["missed_day"] = False
+
+    major_badges = [
+        "Night Owl",
+        "Early Bird",
+        "Marathoner"
+    ]
+
+    for title, message in unlocked:
+
+        if any(
+            badge in title
+            for badge in major_badges
+        ):
+
+            show_badge_popup(
+                app,
+                title,
+                message
+            )
+
+        else:
+
+            show_notification(
+                app,
+                "🏆 Achievement Unlocked!",
+                f"{title}\n{message}"
+            )
