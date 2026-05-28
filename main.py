@@ -43,6 +43,275 @@ from badge_popup import (
 from badge_collection import (
     open_badges_page
 )
+from auth_system import (
+    signup_user,
+    login_user
+)
+from profile_page import (
+    open_profile
+)
+
+def open_signup_window():
+
+    signup_window = (
+        customtkinter.CTkToplevel(
+            app
+        )
+    )
+
+    signup_window.title(
+        "Sign Up"
+    )
+
+    window_width = 400
+    window_height = 350
+    screen_width = (
+        signup_window
+        .winfo_screenwidth()
+    )
+    screen_height = (
+        signup_window
+        .winfo_screenheight()
+    )
+    x_position = (
+        screen_width // 2
+    ) - (
+        window_width // 2
+    )
+
+    y_position = (
+        screen_height // 2
+    ) - (
+        window_height // 2
+    )
+
+    signup_window.geometry(
+        f"{window_width}x{window_height}"
+        f"+{x_position}"
+        f"+{y_position}"
+    )
+
+    signup_window.resizable(
+        False,
+        False
+    )
+
+    signup_window.grab_set()
+
+    title = (
+        customtkinter
+        .CTkLabel(
+            signup_window,
+            text="Create Account",
+            font=(
+                "Arial",
+                24,
+                "bold"
+            )
+        )
+    )
+    title.pack(
+        pady=20
+    )
+
+    username_entry = (
+        customtkinter
+        .CTkEntry(
+            signup_window,
+            placeholder_text="Username",
+            width=260
+        )
+    )
+    username_entry.pack(
+        pady=10
+    )
+
+    password_entry = (
+        customtkinter
+        .CTkEntry(
+            signup_window,
+            placeholder_text="Password",
+            show="*",
+            width=260
+        )
+    )
+    password_entry.pack(
+        pady=10
+    )
+
+    confirm_password_entry = (
+        customtkinter
+        .CTkEntry(
+            signup_window,
+            placeholder_text="Confirm Password",
+            show="*",
+            width=260
+        )
+    )
+    confirm_password_entry.pack(
+        pady=10
+    )
+
+    def signup_action():
+
+        success = signup_user(
+            username_entry.get(),
+            password_entry.get(),
+            confirm_password_entry.get()
+        )
+
+        if success:
+            signup_window.destroy()
+
+    signup_button_popup = (
+        customtkinter
+        .CTkButton(
+            signup_window,
+            text="Create Account",
+            command=signup_action
+        )
+    )
+    signup_button_popup.pack(
+        pady=20
+    )
+
+
+def open_login_window():
+
+    login_window = (
+        customtkinter.CTkToplevel(
+            app
+        )
+    )
+
+    login_window.title(
+        "Login"
+    )
+
+    window_width = 400
+    window_height = 300
+    screen_width = (
+        login_window
+        .winfo_screenwidth()
+    )
+    screen_height = (
+        login_window
+        .winfo_screenheight()
+    )
+
+    x_position = (
+        screen_width // 2
+    ) - (
+        window_width // 2
+    )
+
+    y_position = (
+        screen_height // 2
+    ) - (
+        window_height // 2
+    )
+
+    login_window.geometry(
+        f"{window_width}x{window_height}"
+        f"+{x_position}"
+        f"+{y_position}"
+    )
+
+    login_window.resizable(
+        False,
+        False
+    )
+
+    login_window.grab_set()
+
+    title = (
+        customtkinter
+        .CTkLabel(
+            login_window,
+            text="Welcome Back",
+            font=(
+                "Arial",
+                24,
+                "bold"
+            )
+        )
+    )
+    title.pack(
+        pady=20
+    )
+
+    username_entry = (
+        customtkinter
+        .CTkEntry(
+            login_window,
+            placeholder_text="Username",
+            width=260
+        )
+    )
+    username_entry.pack(
+        pady=10
+    )
+
+    password_entry = (
+        customtkinter
+        .CTkEntry(
+            login_window,
+            placeholder_text="Password",
+            show="*",
+            width=260
+        )
+    )
+    password_entry.pack(
+        pady=10
+    )
+
+    def login_action():
+        username = (
+            username_entry.get()
+        )
+        password = (
+            password_entry.get()
+        )
+        success = login_user(
+            username,
+            password
+        )
+        if success:
+            current_user[0] = (
+                username
+            )
+            auth_frame.place_forget()
+            user_button.configure(
+                text=(
+                    f"👤 "
+                    f"{username}"
+                )
+            )
+            user_button.place(
+                relx=0.98,
+                rely=0.02,
+                anchor="ne"
+            )
+            messagebox.showinfo(
+                "Success",
+                (
+                    "Logged in "
+                "successfully!"
+                )
+            )
+            login_window.destroy()
+
+    login_button_popup = (
+        customtkinter
+        .CTkButton(
+            login_window,
+            text="Login",
+            command=login_action
+        )
+    )
+    login_button_popup.pack(
+        pady=20
+    )
 
 # creating main application window
 app = customtkinter.CTk()
@@ -88,21 +357,203 @@ center_frame.pack(
     pady=10
 )
 
-#title of app
+# auth buttons frame
+auth_frame = (
+    customtkinter
+    .CTkFrame(
+        center_frame,
+        fg_color="transparent"
+    )
+)
+auth_frame.place(
+    relx=0.98,
+    rely=0.02,
+    anchor="ne"
+)
+
+# login button
+login_button = (
+    customtkinter
+    .CTkButton(
+        auth_frame,
+        text="Login",
+        width=90,
+        height=35,
+        corner_radius=12,
+        command=open_login_window
+    )
+)
+login_button.pack(
+    side="left",
+    padx=5
+)
+
+# signup button
+signup_button = (
+    customtkinter
+    .CTkButton(
+        auth_frame,
+        text="Sign Up",
+        width=90,
+        height=35,
+        corner_radius=12,
+        command=open_signup_window
+    )
+)
+signup_button.pack(
+    side="left",
+    padx=5
+)
+
+def open_user_menu():
+
+    # toggle close if already open
+    if dropdown_menu[0]:
+
+        dropdown_menu[0].destroy()
+        dropdown_menu[0] = None
+
+        return
+
+    dropdown_frame = (
+        customtkinter
+        .CTkFrame(
+            center_frame,
+            width=200,
+            height=200,
+            corner_radius=15
+        )
+    )
+
+    dropdown_menu[0] = (
+        dropdown_frame
+    )
+
+    # place below user button
+    dropdown_frame.place(
+        relx=0.98,
+        y=60,
+        anchor="ne"
+    )
+
+    # my profile button
+    profile_button = (
+        customtkinter
+        .CTkButton(
+            dropdown_frame,
+            text="👤 My Profile",
+            width=180,
+            command=lambda:
+            open_profile(
+                app,
+                current_user,
+                selected_task,
+                task_data,
+                shown_achievements
+            )
+        )
+    )
+    profile_button.pack(
+        pady=(10, 5)
+    )
+
+    # change password button
+    password_button = (
+        customtkinter
+        .CTkButton(
+            dropdown_frame,
+            text="🔐 Change Password",
+            width=180
+        )
+    )
+    password_button.pack(
+        pady=5
+    )
+
+    settings_button = (
+        customtkinter
+        .CTkButton(
+            dropdown_frame,
+            text="⚙️ Settings",
+            width=180
+        )
+    )
+    settings_button.pack(
+        pady=5
+    )
+
+    def logout_user():
+
+        current_user[0] = None
+
+        user_button.place_forget()
+
+        auth_frame.place(
+            relx=0.98,
+            rely=0.02,
+            anchor="ne"
+        )
+
+        dropdown_frame.destroy()
+
+        dropdown_menu[0] = None
+
+        messagebox.showinfo(
+            "Logout",
+            "Logged out successfully!"
+        )
+
+    # logout button
+    logout_button = (
+        customtkinter
+        .CTkButton(
+            dropdown_frame,
+            text="🚪 Logout",
+            fg_color="#b22222",
+            hover_color="#8b1a1a",
+            width=180,
+            command=logout_user
+        )
+    )
+    logout_button.pack(
+        pady=(8, 10)
+    )
+
+# user profile button
+user_button = (
+    customtkinter
+    .CTkButton(
+        center_frame,
+        text="👤 User",
+        width=140,
+        height=35,
+        corner_radius=12,
+        command=open_user_menu
+    )
+)
+
+# hidden initially
+user_button.place_forget()
+
+# title of app
 title_label = customtkinter.CTkLabel(
     center_frame,
     text="FocusVerse",
     font=("Arial", 28, "bold")
 )
-title_label.pack(pady=20)
+title_label.pack(
+    pady=(20, 5)
+)
 
-#subtitle of app
+# subtitle of app
 subtitle_label = customtkinter.CTkLabel(
     center_frame,
     text="Build consistency through focus",
     font=("Arial", 14)
 )
-subtitle_label.pack()
+subtitle_label.pack(
+    pady=(0, 20)
+)
 
 branding_label = customtkinter.CTkLabel(
     left_frame,
@@ -389,6 +840,8 @@ is_quick_focus = False
 task_data = {} #task memory system
 selected_duration = 25
 shown_achievements = set()
+current_user = [None]
+dropdown_menu = [None]
 
 task_listbox.bind(
     "<<ListboxSelect>>",
