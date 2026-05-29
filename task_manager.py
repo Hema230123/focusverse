@@ -1,13 +1,17 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import simpledialog
+from auth_system import (
+    save_user_tasks
+)
 
 def set_task(
         task_entry,
         task_listbox,
         tasks,
         task_data,
-        save_data
+        save_data,
+        current_user
 ):
     task_name = task_entry.get() #gets whatever user types in the input box
 
@@ -80,7 +84,8 @@ def delete_task(
     streak_label,
     points_label,
     focus_label,
-    save_data
+    save_data,
+    current_user
 ):
     selected_index = task_listbox.curselection() #which task user selected
 
@@ -122,7 +127,11 @@ def delete_task(
         if task_name in task_data:
             task_data.pop(task_name) #removes task data from memory
 
-        save_data(task_data)
+        if current_user[0]:
+            save_user_tasks(
+                current_user[0],
+                task_data
+            )
         print(task_data)
 
 #creating edit function
@@ -133,7 +142,8 @@ def edit_task(
     selected_task_ref,
     current_task_label,
     selected_task_heading,
-    save_data
+    save_data,
+    current_user
 ):
     selected_index = task_listbox.curselection()
 
@@ -185,6 +195,8 @@ def edit_task(
     current_task_label.configure(
         text=f"Current Task: {new_task}"
     )
-    save_data(
-        task_data
-    ) #save changes to file
+    if current_user[0]:
+        save_user_tasks(
+            current_user[0],
+            task_data
+        )

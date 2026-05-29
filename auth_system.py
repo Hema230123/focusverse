@@ -90,7 +90,8 @@ def signup_user(
     ] = {
 
         "password":
-        password
+        password,
+        "tasks": {}
     }
 
     save_users(
@@ -129,3 +130,33 @@ def login_user(
     )
 
     return False
+
+def get_user_tasks(
+    username
+):
+
+    users = load_users()
+
+    return users[
+        username
+    ].get(
+        "tasks",
+        {}
+    )
+
+def save_user_tasks(
+    username,
+    task_data
+):
+
+    users = load_users()
+
+    users[
+        username
+    ][
+        "tasks"
+    ] = task_data
+
+    save_users(
+        users
+    )

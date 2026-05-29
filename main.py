@@ -45,7 +45,9 @@ from badge_collection import (
 )
 from auth_system import (
     signup_user,
-    login_user
+    login_user,
+    get_user_tasks,
+    save_user_tasks
 )
 from profile_page import (
     open_profile
@@ -280,6 +282,31 @@ def open_login_window():
             current_user[0] = (
                 username
             )
+
+            # clear old tasks
+            tasks.clear()
+            task_data.clear()
+            task_listbox.delete(
+                0,
+                "end"
+            )
+            # load current user's tasks
+            user_tasks = (
+                get_user_tasks(
+                    username
+                )
+            )
+            task_data.update(
+                user_tasks
+            )
+            tasks.extend(
+                task_data.keys()
+            )
+            for task in tasks:
+                task_listbox.insert(
+                    "end",
+                    task
+                )
             auth_frame.place_forget()
             user_button.configure(
                 text=(
@@ -485,6 +512,33 @@ def open_user_menu():
     def logout_user():
 
         current_user[0] = None
+        # clear tasks on logout
+        tasks.clear()
+        task_data.clear()
+        task_listbox.delete(
+            0,
+            "end"
+        )
+        selected_task[0] = None
+        current_task_label.configure(
+            text="Current Task: None"
+        )
+        selected_task_heading.configure(
+            text="No Task Selected"
+        )
+        streak_label.configure(
+            text="🔥 Streak: 0 days"
+        )
+        points_label.configure(
+            text="⭐ Points: 0"
+        )
+        focus_label.configure(
+            text="⏱ Focus Time: 0 mins"
+        )
+        task_listbox.insert(
+            "end",
+            "🌱 Login to start your journey"
+        )
 
         user_button.place_forget()
 
@@ -596,7 +650,8 @@ set_task_button = customtkinter.CTkButton(
         task_listbox,
         tasks,
         task_data,
-        save_data
+        save_data,
+        current_user
     )
 )
 set_task_button.pack(pady=5)
@@ -617,7 +672,8 @@ delete_task_button = customtkinter.CTkButton(
         streak_label,
         points_label,
         focus_label,
-        save_data
+        save_data,
+        current_user
     )
 )
 delete_task_button.pack(pady=5)
@@ -635,7 +691,8 @@ edit_task_button = customtkinter.CTkButton(
         selected_task,
         current_task_label,
         selected_task_heading,
-        save_data
+        save_data,
+        current_user
     )
 )
 edit_task_button.pack(pady=5)
